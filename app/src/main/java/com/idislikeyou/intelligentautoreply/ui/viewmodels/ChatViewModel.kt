@@ -41,8 +41,8 @@ class ChatViewModel(val dataStore: DataStore<AppSettings>) : ViewModel() {
 
         viewModelScope.launch {
             try {
-                setCurrentThread(ChatThread(id = "thread_OWRsT6VxXuk3dHLKcWNkQmsy"))
-                val response = chatService.getMessages("Bearer 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", _currentThread.value.id, limit = 100)
+                setCurrentThread(ChatThread(id = "<thread>"))
+                val response = chatService.getMessages("Bearer <key>", _currentThread.value.id, limit = 100)
 
                 _chatMessageState.value = _chatMessageState.value.copy(
                     list = response.data,
@@ -98,7 +98,7 @@ class ChatViewModel(val dataStore: DataStore<AppSettings>) : ViewModel() {
             disableChatMessageInput()
 
             val message = chatService.createMessage(
-                "Bearer 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",
+                "Bearer <key>",
                 _currentThread.value.id,
                 ChatMessage(content = _chatMessageInputState.value.input)
             )
@@ -110,14 +110,14 @@ class ChatViewModel(val dataStore: DataStore<AppSettings>) : ViewModel() {
             )
 
             val run = chatService.createRun(
-                "Bearer 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",
+                "Bearer <key>",
                 _currentThread.value.id,
                 CreateRun(_currentAssistant.value, false)
             )
 
             while (running) {
                 val runUpdate = chatService.retrieveRun(
-                        auth = "Bearer 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",
+                        auth = "Bearer <key>",
                         chatThreadId = _currentThread.value.id,
                         run.id
                     )
@@ -130,7 +130,7 @@ class ChatViewModel(val dataStore: DataStore<AppSettings>) : ViewModel() {
             }
 
             val reply = chatService.getMessages(
-                auth = "Bearer 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",
+                auth = "Bearer <key>",
                 chatThreadId = _currentThread.value.id,
                 limit = 100
             )
